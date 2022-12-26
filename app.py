@@ -328,40 +328,6 @@ def webhook_handler():
         print(f"\nafter FSM STATE: {machine.state}")
         
 
-        '''
-        if mode == 1:
-            if event.message.text.lower() == '開始': #要進入初始模式
-                mode = 0  #初始模式
-                #send_text_message(event.reply_token, '輸入『開始』返回主頁面。\n隨時輸入『chat』可以跟機器人聊天。\n')
-                #continue
-            else:
-                #send_text_message_AI(event.reply_token, event.message.text)
-                continue
-        else: #mode = 0
-            if event.message.text.lower() == 'chat':  #要進入聊天模式
-                mode = 1  #聊天模式
-                send_text_message(event.reply_token, '進入聊天模式！\U0001F439')
-                continue
-            else:
-                response = machine.advance(event)
-        '''
-
-        '''
-        if response == False:
-            #send_text_message(event.reply_token, "Not Entering any State")
-            #if event.message.text.lower() == 'fsm':
-                #send_image_message(event.reply_token, '')
-            #elif machine.state != 'user' and event.message.text.lower() == 'restart':
-            if machine.state != 'user':
-                #send_text_message(event.reply_token, '輸入『menu』返回主選單。\n隨時輸入『chat』可以跟機器人聊天。\n')
-                send_text_message(event.reply_token, '輸入『開始』返回主選單。')
-                machine.go_back()
-            elif machine.state == 'user':
-                send_text_message(event.reply_token, '輸入『開始』返回主選單。')
-            elif machine.state == 'menu':
-                send_text_message(event.reply_token, '請選擇您想要的功能')
-        '''
-        
     return "OK"
 
 
