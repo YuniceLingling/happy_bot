@@ -13,15 +13,6 @@ def send_text_message(reply_token, text):
 
     return "OK"
 
-'''
-def send_text_message_AI(reply_token, text):
-    line_bot_api = LineBotApi(channel_access_token)
-    #line_bot_api.reply_message(reply_token,TextSendMessage(text=Olami().nli(text)))
-    line_bot_api.reply_message(reply_token, TextSendMessage(text=text))
-
-    return "OK"
-'''
-
 
 def send_button_message(reply_token, title, text, btn, url):
     line_bot_api = LineBotApi(channel_access_token)
