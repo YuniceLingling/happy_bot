@@ -8,16 +8,12 @@ This is a helper to help you decide what you can do in your free time, you can c
 Introduce five movies 
 ![](https://i.imgur.com/UjbCnU6.png)
 
-
 ### eat
 Choose what you want to eat now
 ![](https://i.imgur.com/nSGpzfL.png)
 
-
 ### workout
 ![](https://i.imgur.com/I88hJnf.png)
-
-
 
 
 
