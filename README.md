@@ -37,10 +37,10 @@ Choose what you want to eat now
 
 
 ## States
-* user
+* ```user```
     * Input: "開始"
       * Reply: "*a button message* which allows to choose a kind activity & show fsm"
-* menu
+* ```menu```
     * Input: "看電影"
       * Reply: "a list of 5 introduced movies"
     * Input: "美食"
@@ -49,23 +49,23 @@ Choose what you want to eat now
       * Reply: "*a button message* to choose how long are you going to do your workout"
     * Input: "show fsm"
       * Reply: "show the fsm diagram"
-* movie
+* ```movie```
     
-* eat
+* ```eat```
     * Input: "正餐"
       * Reply: "*a button message* of 2 cities"
     * Input: "飲料"
       * Reply: "a list of 3 recommanded beverage shops around school"
     * Input: "點心"
       * Reply: "a list 3 recommanded dessert shops around school"
-* workout
+* ```workout```
     * Input: "15min"
       * Reply: "two videos about 15 minutes workout for beginners and seniors"
     * Input: "20min"
       * Reply: "two videos about 20 minutes workout for beginners and seniors"
 
 
-* others
+* others...
   * Can always return to menu by entering 『開始』.
   * For states under ```eat``` can always enter 『eat』 to go back to ```eat``` menu.
   
