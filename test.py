@@ -19,12 +19,14 @@ machine = GraphMachine(model=model, states=[
     "meal", 
     "drink", 
     "dessert", 
-    "show_fsm", 
-    "random_meal", 
+    "show_fsm",  
     "random_dessert", 
     "random_drink", 
     "fifteen", 
-    "twenty"],
+    "twenty",
+    "place1", 
+    "place2", 
+    ],
     transitions=[
         {
             "trigger": "advance",
@@ -94,6 +96,54 @@ machine = GraphMachine(model=model, states=[
         { 
             "trigger": "advance",
             "source": "meal",
+            "dest": "place1",
+            "conditions": "is_going_to_place1",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place1",
+            "dest": "meal",
+            "conditions": "is_going_to_meal",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place1",
+            "dest": "eat",
+            "conditions": "is_going_to_eat",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place1",
+            "dest": "menu",
+            "conditions": "is_going_to_menu",
+        },
+        { 
+            "trigger": "advance",
+            "source": "meal",
+            "dest": "place2",
+            "conditions": "is_going_to_place2",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place2",
+            "dest": "meal",
+            "conditions": "is_going_to_meal",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place2",
+            "dest": "eat",
+            "conditions": "is_going_to_eat",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place2",
+            "dest": "menu",
+            "conditions": "is_going_to_menu",
+        },
+        { 
+            "trigger": "advance",
+            "source": "meal",
             "dest": "eat",
             "conditions": "is_going_to_eat",
         },
@@ -103,18 +153,6 @@ machine = GraphMachine(model=model, states=[
             "dest": "menu",
             "conditions": "is_going_to_menu",
         },
-        {   "trigger": "advance",
-            "source": "meal",
-            "dest": "random_meal",
-            "conditions": "is_going_random_meal",   
-        },
-        { 
-            "trigger": "advance",
-            "source": "random_meal",
-            "dest": "menu",
-            "conditions": "is_going_to_menu",
-        },
-        
         { # eat <-> drink
             "trigger": "advance",
             "source": "eat",
@@ -195,26 +233,29 @@ machine = GraphMachine(model=model, states=[
             "source": "twenty",
             "dest": "work_out",
             "conditions": "is_going_to_work_out",
-        },
+        }, 
         { ######
             "trigger": "advance", 
-            "source": ["menu", "work_out" "movie", "show_fsm", "meal", "drink", "dessert", "random_meal", "random_dessert", "random_drink"], 
-            "dest": "menu",
-            "conditions": "is_go_back"
-            
-        },
-        { ######
-            "trigger": "advance", 
-            "source": ["menu", "work_out" "movie", "show_fsm", "meal", "drink", "dessert", "random_meal", "random_dessert", "random_drink", "fifteen", "twenty"], 
+            "source": ["menu", "work_out", "movie", "show_fsm", "meal", "drink", "dessert", "random_dessert", "random_drink", "fifteen", "twenty", "place1", "place2"], 
             "dest": "menu",
             "conditions": "is_going_to_menu"
             
         },
-       
-       
     ],
-    initial = 'user',
+    initial = 'menu',
     auto_transitions= False,
     show_conditions= True,)
 
 model.get_graph().draw('fsm.png', prog='dot')
+
+'''
+        { ######
+            "trigger": "advance", 
+            "source": ["menu", "work_out", "movie", "show_fsm", "meal", "drink", "dessert", "random_dessert", "random_drink", "fifteen", "twenty"], 
+            "dest": "user",
+            #"conditions": "is_go_back"
+            
+        },
+'''
+       
+       

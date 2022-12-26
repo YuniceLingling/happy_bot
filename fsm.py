@@ -40,7 +40,9 @@ class TocMachine(GraphMachine):
 
     def is_going_to_menu(self, event):
         text = event.message.text
-        return text == "開始"
+        if text == '開始':
+            return True
+        return False
         #return text.lower() == "go to selection"
         '''
         if text == 'selection' or text.lower()=='back':
@@ -111,15 +113,15 @@ class TocMachine(GraphMachine):
     
     
     def on_enter_movie(self, event):
-        r = requests.get('http://www.atmovies.com.tw/movie/new/')
-        r.encoding = 'utf-8'
+        response = requests.get('http://www.atmovies.com.tw/movie/new/')
+        response.encoding = 'utf-8'
 
-        soup = BeautifulSoup(r.text, 'lxml')
+        soup = BeautifulSoup(response.text, 'lxml')
         content = []
         for i, data in enumerate(soup.select('div.filmTitle a')):
-            if i > 5:
+            if i == 5:
                 break
-            content.append(data.text + '\n' + 'http://www.atmovies.com.tw' + data['href'])
+            content.append("\U0001F3AC" + data.text + '\n' + 'http://www.atmovies.com.tw' + data['href'])
         
         send_text_message(event.reply_token, text='\n\n'.join(content))
     
@@ -155,36 +157,69 @@ class TocMachine(GraphMachine):
         if text == '正餐' or (self.state == 'meal' and text == '開始') or (self.state == 'meal' and text == '美食'):
             return True
         return False
-
+    
+   
     def on_enter_meal(self, event):
         print("I'm entering meal")
+        title = "請選擇吃飯地區?"
+        text = "台南市/高雄市"
+        btn = [
+            MessageTemplateAction(
+                label = "台南市",
+                text = "台南市"
+            ),
+            MessageTemplateAction(
+                label = "高雄市",
+                text = "高雄市"
+            ),
+        ]
+        
+        url = 'https://www.funtime.com.tw/blog_campaign/images/bg_map_TW_m.png'
+        send_button_message(event.reply_token, title, text, btn, url)
+       
+
+    def is_going_to_place1(self, event):
         text = event.message.text
-        if text == '正餐':
-            send_text_message(event.reply_token, '輸入您想要查詢的地區（ex. 台南市）: ')
-            return 
-        response = requests.get("https://ifoodie.tw/explore/" + event.message.text + "/list?sortby=popular&opening=true")
+        if text == '台南市' or (self.state == 'place1' and text == '開始') or (self.state == 'place1' and text == '美食'):
+            return True
+        return False
+
+    def is_going_to_place2(self, event):
+        text = event.message.text
+        if text == '高雄市' or (self.state == 'place2' and text == '開始') or (self.state == 'place2' and text == '美食'):
+            return True
+        return False
+
+    def on_enter_place1(self, event):
+        print("I'm entering place1")
+
+        response = requests.get("https://ifoodie.tw/explore/台南市/list?sortby=popular&opening=true")
         soup = BeautifulSoup(response.content, "html.parser")
-        cards = soup.find_all('div', {'class': 'jsx-2133253768 restaurant-item track-impression-ga'}, limit=5)
+        cards = soup.find_all('div', {'class': 'jsx-3292609844 restaurant-item track-impression-ga'}, limit=5)
         content = ""
         for card in cards:
-            title = card.find("a", {"class": "jsx-2133253768 title-text"}).getText()  #餐廳名稱
-            stars = card.find( "div", {"class": "jsx-1207467136 text"}).getText()   #評價
-            address = card.find("div", {"class": "jsx-2133253768 address-row"}).getText()  #地址
-            content += f"{title} \n{stars}顆星 \n{address} \n\n"
+            title = card.find("a", {"class": "jsx-3292609844 title-text"}).getText()
+            stars = card.find( "div", {"class": "jsx-1207467136 text"}).getText()
+            address = card.find("div", {"class": "jsx-3292609844 address-row"}).getText()
+            content += f"\U0001F35C{title} \n\U0001F31F{stars}顆星 \n\U0001F3DA{address} \n\n"
         
         send_text_message(event.reply_token, content)
-       
+
+    def on_enter_place2(self, event):
+        print("I'm entering place2")
+
+        response = requests.get("https://ifoodie.tw/explore/高雄市/list?sortby=popular&opening=true")
+        soup = BeautifulSoup(response.content, "html.parser")
+        cards = soup.find_all('div', {'class': 'jsx-3292609844 restaurant-item track-impression-ga'}, limit=5)
+        content = ""
+        for card in cards:
+            title = card.find("a", {"class": "jsx-3292609844 title-text"}).getText()
+            stars = card.find( "div", {"class": "jsx-1207467136 text"}).getText()
+            address = card.find("div", {"class": "jsx-3292609844 address-row"}).getText()
+            content += f"\U0001F35C{title} \n\U0001F31F{stars}顆星 \n\U0001F3DA{address} \n\n"
         
-        
+        send_text_message(event.reply_token, content)
     
-    def is_going_random_meal(self, event):
-        text = event.message.text
-        return text == "random"
-
-        ## nono
-
-
-
 
     def is_going_to_drink(self, event):
         text = event.message.text
@@ -196,8 +231,8 @@ class TocMachine(GraphMachine):
     def on_enter_drink(self, event):
         print("I'm entering drink")
 
-        msg = "推薦三間成大附近的飲料店給您！\n" + "1. " + self.drink[0] + "\n" + "2. " + self.drink[1] + "\n" + "3. " + self.drink[2] + \
-        "\n輸入「random drink」，可幫您隨機選一間飲料店!"
+        msg = "\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\U0001F379\n推薦三間成大附近的飲料店給您！\n" + "1. " + self.drink[0] + "\n" + "2. " + self.drink[1] + "\n" + "3. " + self.drink[2] + \
+        "\n\n輸入「random drink」，可幫您隨機選一間飲料店!\U0001F60E"
         send_text_message(event.reply_token, msg)  
     
 
@@ -210,7 +245,7 @@ class TocMachine(GraphMachine):
     def on_enter_random_drink(self, event):
         print("I'm entering random drink")
         r = random.randrange(6)
-        msg = "以下為幫您隨機選擇的飲料店家！\n" + self.drink[r] + "\n"
+        msg = "\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\U0001F37A\n以下為幫您隨機選擇的飲料店家！\n" + self.drink[r] + "\n"
         send_text_message(event.reply_token, msg)
 
     
@@ -224,8 +259,8 @@ class TocMachine(GraphMachine):
 
     def on_enter_dessert(self, event):
         print("I'm entering dessert")
-        msg = "推薦三間成大附近的點心店給您！\n" + "1. " + self.dessert[0] + "\n" + "2. " + self.dessert[1] + "\n" + "3. " + self.dessert[2] + \
-        "\n輸入「random dessert」，可以幫您隨機選一間點心店!"
+        msg = "\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\U0001F361\n推薦三間成大附近的點心店給您！\n" + "1. " + self.dessert[0] + "\n" + "2. " + self.dessert[1] + "\n" + "3. " + self.dessert[2] + \
+        "\n\n輸入「random dessert」，可以幫您隨機選一間點心店!\U0001F60E"
         send_text_message(event.reply_token, msg) 
 
     def is_going_to_random_dessert(self, event):
@@ -237,7 +272,7 @@ class TocMachine(GraphMachine):
     def on_enter_random_dessert(self, event):
         print("I'm entering random dessert")
         r = random.randrange(6)
-        msg = "以下為幫您隨機選擇的點心店家！\n" + self.dessert[r] + "\n"
+        msg = "\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\U0001F36A\n以下為幫您隨機選擇的點心店家！\n" + self.dessert[r] + "\n"
         send_text_message(event.reply_token, msg)
 
     def on_enter_work_out(self, event):

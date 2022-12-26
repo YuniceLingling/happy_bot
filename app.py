@@ -8,15 +8,17 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 
 from fsm import TocMachine
-from utils import send_text_message, send_button_message, send_image_message,send_text_message_AI
+import numpy
+import pandas as pd
+from utils import send_text_message, send_button_message, send_image_message
 
-
+import json
 
 load_dotenv()
 
 
 machine = TocMachine(
-    states=["user", "menu", "movie", "eat", "work_out", "meal", "drink", "dessert", "show_fsm", "random_meal", "random_dessert", "random_drink", "fifteen", "twenty"],
+    states=["user", "menu", "movie", "eat", "work_out", "meal", "drink", "dessert", "show_fsm", "random_dessert", "random_drink", "fifteen", "twenty", "place1", "place2"],
     transitions=[
         {
             "trigger": "advance",
@@ -86,6 +88,54 @@ machine = TocMachine(
         { 
             "trigger": "advance",
             "source": "meal",
+            "dest": "place1",
+            "conditions": "is_going_to_place1",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place1",
+            "dest": "meal",
+            "conditions": "is_going_to_meal",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place1",
+            "dest": "eat",
+            "conditions": "is_going_to_eat",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place1",
+            "dest": "menu",
+            "conditions": "is_going_to_menu",
+        },
+        { 
+            "trigger": "advance",
+            "source": "meal",
+            "dest": "place2",
+            "conditions": "is_going_to_place2",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place2",
+            "dest": "meal",
+            "conditions": "is_going_to_meal",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place2",
+            "dest": "eat",
+            "conditions": "is_going_to_eat",
+        },
+        { 
+            "trigger": "advance",
+            "source": "place2",
+            "dest": "menu",
+            "conditions": "is_going_to_menu",
+        },
+        { 
+            "trigger": "advance",
+            "source": "meal",
             "dest": "eat",
             "conditions": "is_going_to_eat",
         },
@@ -95,18 +145,6 @@ machine = TocMachine(
             "dest": "menu",
             "conditions": "is_going_to_menu",
         },
-        {   "trigger": "advance",
-            "source": "meal",
-            "dest": "random_meal",
-            "conditions": "is_going_random_meal",   
-        },
-        { 
-            "trigger": "advance",
-            "source": "random_meal",
-            "dest": "menu",
-            "conditions": "is_going_to_menu",
-        },
-        
         { # eat <-> drink
             "trigger": "advance",
             "source": "eat",
@@ -187,27 +225,18 @@ machine = TocMachine(
             "source": "twenty",
             "dest": "work_out",
             "conditions": "is_going_to_work_out",
-        },
+        }, 
         { ######
             "trigger": "advance", 
-            "source": ["menu", "work_out" "movie", "show_fsm", "meal", "drink", "dessert", "random_meal", "random_dessert", "random_drink"], 
-            "dest": "menu",
-            "conditions": "is_go_back"
-            
-        },
-        { ######
-            "trigger": "advance", 
-            "source": ["menu", "work_out" "movie", "show_fsm", "meal", "drink", "dessert", "random_meal", "random_dessert", "random_drink", "fifteen", "twenty"], 
+            "source": ["menu", "work_out", "movie", "show_fsm", "meal", "drink", "dessert", "random_dessert", "random_drink", "fifteen", "twenty", "place1", "place2"], 
             "dest": "menu",
             "conditions": "is_going_to_menu"
             
         },
-       
-       
     ],
     initial="user",
     auto_transitions=False,
-    #show_conditions=True,
+    show_conditions=True,
 )
 
 app = Flask(__name__, static_url_path="")
@@ -228,7 +257,7 @@ if channel_access_token is None:
 line_bot_api = LineBotApi(channel_access_token)
 parser = WebhookParser(channel_secret)
 
-#mode = 0 # mode 0
+mode = 0 # mode 0
 
 
 
@@ -268,7 +297,7 @@ def callback():
 
 @app.route("/webhook", methods=["POST"])
 def webhook_handler():
-    #global mode
+    global mode
 
     signature = request.headers["X-Line-Signature"]
     # get request body as text
@@ -291,12 +320,47 @@ def webhook_handler():
             continue
         print(f"\nFSM STATE: {machine.state}")
         print(f"REQUEST BODY: \n{body}")
+
+
         response = machine.advance(event)
         if response == False:
             send_text_message(event.reply_token, "Not Entering any State")
         print(f"\nafter FSM STATE: {machine.state}")
         
 
+        '''
+        if mode == 1:
+            if event.message.text.lower() == '開始': #要進入初始模式
+                mode = 0  #初始模式
+                #send_text_message(event.reply_token, '輸入『開始』返回主頁面。\n隨時輸入『chat』可以跟機器人聊天。\n')
+                #continue
+            else:
+                #send_text_message_AI(event.reply_token, event.message.text)
+                continue
+        else: #mode = 0
+            if event.message.text.lower() == 'chat':  #要進入聊天模式
+                mode = 1  #聊天模式
+                send_text_message(event.reply_token, '進入聊天模式！\U0001F439')
+                continue
+            else:
+                response = machine.advance(event)
+        '''
+
+        '''
+        if response == False:
+            #send_text_message(event.reply_token, "Not Entering any State")
+            #if event.message.text.lower() == 'fsm':
+                #send_image_message(event.reply_token, '')
+            #elif machine.state != 'user' and event.message.text.lower() == 'restart':
+            if machine.state != 'user':
+                #send_text_message(event.reply_token, '輸入『menu』返回主選單。\n隨時輸入『chat』可以跟機器人聊天。\n')
+                send_text_message(event.reply_token, '輸入『開始』返回主選單。')
+                machine.go_back()
+            elif machine.state == 'user':
+                send_text_message(event.reply_token, '輸入『開始』返回主選單。')
+            elif machine.state == 'menu':
+                send_text_message(event.reply_token, '請選擇您想要的功能')
+        '''
         
     return "OK"
 
