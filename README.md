@@ -33,8 +33,7 @@ Choose what you want to eat now
 
 ## FSM Diagram
 
-![](https://i.imgur.com/J9UUVPL.png)
-
+![](https://i.imgur.com/GG2u1cw.png)
 
 
 ## States
