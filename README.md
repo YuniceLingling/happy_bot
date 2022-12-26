@@ -40,21 +40,21 @@ Choose what you want to eat now
 ## States
 * user
     * Input: "開始"
-      * Reply: "*a button image* which allows to choose a kind activity & show fsm"
+      * Reply: "*a button message* which allows to choose a kind activity & show fsm"
 * menu
     * Input: "看電影"
       * Reply: "a list of 5 introduced movies"
     * Input: "美食"
-      * Reply: "*a button image* of 3 types of food"
+      * Reply: "*a button message* of 3 types of food"
     * Input: "健身"
-      * Reply: "*a button image* to choose how long are you going to do your workout"
+      * Reply: "*a button message* to choose how long are you going to do your workout"
     * Input: "show fsm"
       * Reply: "show the fsm diagram"
 * movie
     
 * eat
     * Input: "正餐"
-      * Reply: "*a button image* of 2 cities"
+      * Reply: "*a button message* of 2 cities"
     * Input: "飲料"
       * Reply: "a list of 3 recommanded beverage shops around school"
     * Input: "點心"
