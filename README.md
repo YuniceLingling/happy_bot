@@ -1,6 +1,7 @@
 # happy_bot
 ## Introduction
 This is a helper to help you decide what you can do in your free time, you can choose to watch movie, eat delicious food, or do some workout.
+
 ![](https://i.imgur.com/zLpD9En.png)
 
 
