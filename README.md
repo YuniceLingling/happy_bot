@@ -6,18 +6,30 @@ This is a helper to help you decide what you can do in your free time, you can c
 
 ### movie
 Introduce five movies 
+
 ![](https://i.imgur.com/UjbCnU6.png)
+
+
+
 
 ### eat
 Choose what you want to eat now
+
 ![](https://i.imgur.com/nSGpzfL.png)
 
+
+
+
 ### workout
+
 ![](https://i.imgur.com/I88hJnf.png)
 
 
 
+
+
 ## FSM Diagram
+
 ![](https://i.imgur.com/Y44Mufh.png)
 
 
@@ -55,7 +67,8 @@ The initial state is set to ```user```.
 
 * others
   * 隨時按『開始』可以回到主選單
-![](https://i.imgur.com/VMKr2GL.png)
+  
+   ![](https://i.imgur.com/VMKr2GL.png)
 
 
 
