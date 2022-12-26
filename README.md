@@ -73,6 +73,4 @@ The initial state is set to ```user```.
 
 
 
-## Bonus
-* use web crawling to search movie
 
