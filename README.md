@@ -67,7 +67,7 @@ Choose what you want to eat now
 
 * others...
   * Can always return to menu by entering 『開始』.
-  * For states under ```eat``` can always enter 『eat』 to go back to ```eat``` menu.
+  * For states under ```eat``` can always enter 『美食』 to go back to ```eat``` menu.
   
    ![](https://i.imgur.com/VMKr2GL.png)
 
