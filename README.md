@@ -8,7 +8,7 @@ This is a helper to help you decide what you can do in your free time, you can c
 ### movie
 Introduce five movies 
 
-![](https://i.imgur.com/UjbCnU6.png)
+![](https://i.imgur.com/9OPfFHW.png)
 
 
 
@@ -25,19 +25,19 @@ Choose what you want to eat now
 
 ![](https://i.imgur.com/I88hJnf.png)
 
+### show fsm
 
+![](https://i.imgur.com/YcfFVJh.png)
 
 
 
 ## FSM Diagram
 
-![](https://i.imgur.com/Y44Mufh.png)
+![](https://i.imgur.com/J9UUVPL.png)
 
 
 
 ## States
-The initial state is set to ```user```.
-
 * user
     * Input: "開始"
       * Reply: "*a button image* which allows to choose a kind activity & show fsm"
@@ -54,7 +54,7 @@ The initial state is set to ```user```.
     
 * eat
     * Input: "正餐"
-      * Reply: ""
+      * Reply: "*a button image* of 2 cities"
     * Input: "飲料"
       * Reply: "a list of 3 recommanded beverage shops around school"
     * Input: "點心"
@@ -67,9 +67,16 @@ The initial state is set to ```user```.
 
 
 * others
-  * 隨時按『開始』可以回到主選單
+  * Can always return to menu by entering 『開始』.
+  * For states under ```eat``` can always enter 『eat』 to go back to ```eat``` menu.
   
    ![](https://i.imgur.com/VMKr2GL.png)
+
+
+
+## Bonus
+* Use web crawling to search movie & search city of popular food
+
 
 
 
